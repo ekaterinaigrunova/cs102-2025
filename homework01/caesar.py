@@ -1,4 +1,6 @@
-
+"""
+Это шифр Цезаря
+"""
 def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
     """
     Encrypts plaintext using a Caesar cipher.
@@ -12,14 +14,15 @@ def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
     ''
     """
     ciphertext = ""
-    if len(plaintext)==0:
+    if len(plaintext) == 0:
         return ""
     for symbol in plaintext:
-        if symbol.isupper() == True:
-            ciphertext += chr ( 65 + ( ord (symbol) - 65 + shift) % 26)
-        elif symbol.islower() == True:
+        if symbol.isupper():
+            ciphertext += chr(65 + (ord(symbol) - 65 + shift) % 26)
+        elif symbol.islower():
             ciphertext += chr(97 + (ord(symbol) - 97 + shift) % 26)
-        else: ciphertext += symbol
+        else:
+            ciphertext += symbol
     return ciphertext
 
 
@@ -36,15 +39,14 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
     """
 
     plaintext = ""
-    if len(ciphertext)==0:
+    if len(ciphertext) == 0:
         return
     for symbol in ciphertext:
-        if symbol.isupper() == True:
+        if symbol.isupper():
             plaintext += chr(65 + (ord(symbol) - 65 - shift) % 26)
-        elif symbol.islower() == True:
+        elif symbol.islower():
             plaintext += chr(97 + (ord(symbol) - 97 - shift) % 26)
         else:
             plaintext += symbol
 
     return plaintext
-
