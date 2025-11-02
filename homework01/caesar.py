@@ -42,7 +42,7 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
 
     plaintext = ""
     if len(ciphertext) == 0:
-        return
+        return ""
     for symbol in ciphertext:
         if symbol.isupper():
             plaintext += chr(65 + (ord(symbol) - 65 - shift) % 26)
