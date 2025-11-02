@@ -1,6 +1,9 @@
+"""
+Это алгоритм шифрования RSA
+"""
+
 import random
 import typing as tp
-
 
 def is_prime(n: int) -> bool:
     """
@@ -14,11 +17,11 @@ def is_prime(n: int) -> bool:
     """
     if n < 2:
         return False
-    for i in range(2, int(n ** 0.5) + 1):
-        if n % i == 0: return False
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
     return True
     pass
-
 
 
 def gcd(a: int, b: int) -> int:
@@ -29,13 +32,13 @@ def gcd(a: int, b: int) -> int:
     >>> gcd(3, 7)
     1
     """
-    if a==0 or b==0:
-        return max(a,b)
-    if a>b:
-        return gcd (a%b,b)
-    else:
-        return gcd(a,b%a)
-    pass
+    if a == 0 or b == 0:
+        return max(a, b)
+    if a > b:
+        return gcd(a % b, b)
+
+    return gcd(a, b % a)
+
 
 
 def multiplicative_inverse(e: int, phi: int) -> int:
@@ -46,7 +49,7 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     >>> multiplicative_inverse(7, 40)
     23
     """
-    #(e · d) mod φ(n) = 1
+    # (e · d) mod φ(n) = 1
 
     old_r, r = e, phi
     old_s, s = 1, 0
@@ -66,17 +69,19 @@ def multiplicative_inverse(e: int, phi: int) -> int:
 
 
 def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[int, int]]:
+    """
+    Сгенерировать пару ключей
+    """
     if not (is_prime(p) and is_prime(q)):
         raise ValueError("Both numbers must be prime.")
     elif p == q:
         raise ValueError("p and q cannot be equal")
 
     # n = pq
-    n=p*q
+    n = p * q
 
-    #phi = (p-1)(q-1)
-    phi = (p - 1)*(q - 1)
-
+    # phi = (p-1)(q-1)
+    phi = (p - 1) * (q - 1)
 
     # Choose an integer e such that e and phi(n) are coprime
     e = random.randrange(1, phi)
@@ -96,6 +101,9 @@ def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[in
 
 
 def encrypt(pk: tp.Tuple[int, int], plaintext: str) -> tp.List[int]:
+    """
+    Зашифровка
+    """
     # Unpack the key into it's components
     key, n = pk
     # Convert each letter in the plaintext to numbers based on
@@ -106,10 +114,13 @@ def encrypt(pk: tp.Tuple[int, int], plaintext: str) -> tp.List[int]:
 
 
 def decrypt(pk: tp.Tuple[int, int], ciphertext: tp.List[int]) -> str:
+    """
+    Расшифровка
+    """
     # Unpack the key into its components
     key, n = pk
     # Generate the plaintext based on the ciphertext and key using a^b mod m
-    plain = [chr((char ** key) % n) for char in ciphertext]
+    plain = [chr((char**key) % n) for char in ciphertext]
     # Return the array of bytes as a string
     return "".join(plain)
 
