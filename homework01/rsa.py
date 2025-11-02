@@ -32,9 +32,9 @@ def gcd(a: int, b: int) -> int:
     if a==0 or b==0:
         return max(a,b)
     if a>b:
-        return gcd (a-b,b)
+        return gcd (a%b,b)
     else:
-        return gcd(a,b-a)
+        return gcd(a,b%a)
     pass
 
 
@@ -42,10 +42,26 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     """
     Euclid's extended algorithm for finding the multiplicative
     inverse of two numbers.
+    old_r,r - старый остаток от деления, новый остаток от деления
     >>> multiplicative_inverse(7, 40)
     23
     """
-    # PUT YOUR CODE HERE
+    #(e · d) mod φ(n) = 1
+
+    old_r, r = e, phi
+    old_s, s = 1, 0
+    old_t, t = 0, 1
+
+    while r != 0:
+        quotient = old_r // r
+        old_r, r = r, old_r - quotient * r
+        old_s, s = s, old_s - quotient * s
+        old_t, t = t, old_t - quotient * t
+
+    # old_s содержит коэффициент Безу для e
+    # Приводим к положительному значению по модулю phi
+    return old_s % phi
+
     pass
 
 
@@ -59,7 +75,7 @@ def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[in
     n=p*q
 
     #phi = (p-1)(q-1)
-    phi = (p - 1)(q - 1)
+    phi = (p - 1)*(q - 1)
 
 
     # Choose an integer e such that e and phi(n) are coprime
