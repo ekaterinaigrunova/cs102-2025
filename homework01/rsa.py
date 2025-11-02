@@ -41,7 +41,6 @@ def gcd(a: int, b: int) -> int:
     return gcd(a, b % a)
 
 
-
 def multiplicative_inverse(e: int, phi: int) -> int:
     """
     Euclid's extended algorithm for finding the multiplicative
