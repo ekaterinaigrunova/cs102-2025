@@ -1,6 +1,8 @@
 """
 Это шифр Виженера
 """
+
+
 def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     """
     Encrypts plaintext using a Vigenere cipher.
@@ -49,8 +51,7 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     if len(ciphertext) == 0:
         return ""
     if len_ciphertext != len_keyword:
-        keyword = ((len_ciphertext // len_keyword) * keyword +
-                  keyword[: len_ciphertext % len_keyword])
+        keyword = (len_ciphertext // len_keyword) * keyword + keyword[: len_ciphertext % len_keyword]
 
     for i in range(len_ciphertext):
         symbol = ciphertext[i]
