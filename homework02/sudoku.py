@@ -100,6 +100,7 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[in
                 return i, j
     return None
 
+
 def detotify_findmiss(arr):
     new_arr = [int(i) for i in arr if i != "."]
     num = [1, 2, 3, 4, 5, 6, 7, 8, 9]
