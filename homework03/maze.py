@@ -9,9 +9,8 @@ def create_grid(rows: int = 15, cols: int = 15) -> List[List[Union[str, int]]]:
     return [["■"] * cols for _ in range(rows)]
 
 
-def remove_wall(
-    grid: List[List[Union[str, int]]], coord: Tuple[int, int]
-) -> List[List[Union[str, int]]]:
+def remove_wall(grid: List[List[Union[str, int]]],
+                coord: Tuple[int, int]) -> List[List[Union[str, int]]]:
     """
 
     :param grid:
@@ -22,18 +21,12 @@ def remove_wall(
     rows, cols = len(grid), len(grid[0])
 
     direction = choice(("N", "E"))
-    """
-    if direction == "N" and (x - 2) < 0: #выход за нижнюю границу
+
+    if direction == "N" and (x + 2) >= rows:  # выход за нижнюю границу
         direction = "E"
-        """
-    if direction == "N" and (x + 2) >= rows: #выход за нижнюю границу
-        direction = "E"
-    if direction == "E" and (y + 2) >= cols: #выход за правую границу
+    if direction == "E" and (y + 2) >= cols:  # выход за правую границу
         direction = "N"
-    """
-    if direction == "N" and (x - 2) < 0:
-        return grid
-        """
+
     if direction == "N" and (x + 2) >= rows:
         return grid
     if direction == "E" and (y + 2) >= cols:
@@ -46,9 +39,8 @@ def remove_wall(
     return grid
 
 
-def bin_tree_maze(
-    rows: int = 15, cols: int = 15, random_exit: bool = True
-) -> List[List[Union[str, int]]]:
+def bin_tree_maze(rows: int = 15, cols: int = 15,
+                  random_exit: bool = True) -> List[List[Union[str, int]]]:
     """
     :param rows:
     :param cols:
@@ -63,7 +55,7 @@ def bin_tree_maze(
             if x % 2 == 1 and y % 2 == 1:
                 grid[x][y] = " "
                 empty_cells.append((x, y))
-    for cell in empty_cells: #перебор клеток
+    for cell in empty_cells:  # перебор клеток
         remove_wall(grid, cell)
     # 1. выбрать любую клетку
     # 2. выбрать направление: наверх или направо.
@@ -121,7 +113,7 @@ def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str,
         for dx, dy in dirs:
             nx, ny = x + dx, y + dy
             if 0 <= nx < rows and 0 <= ny < cols and grid[nx][ny] == 0:
-                #если не выходит за границы и путь есть
+                # если не выходит за границы и путь есть
                 grid[nx][ny] = k + 1
     return grid
 
@@ -137,7 +129,6 @@ def shortest_path(
     """
     x, y = exit_coord
     cell = grid[x][y]
-
 
     if not isinstance(cell, int):
         return None
@@ -231,7 +222,6 @@ def solve_maze(
 
     path = shortest_path(work, end)
     return grid, path
-
 
 
 def add_path_to_grid(
