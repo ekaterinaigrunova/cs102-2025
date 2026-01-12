@@ -4,8 +4,8 @@
 """
 
 import pygame
-from pygame import K_ESCAPE, K_SPACE, KEYDOWN, MOUSEBUTTONDOWN, QUIT, K_r
 from life import GameOfLife
+from pygame import K_ESCAPE, K_SPACE, KEYDOWN, MOUSEBUTTONDOWN, QUIT, K_r
 from ui import UI
 
 
