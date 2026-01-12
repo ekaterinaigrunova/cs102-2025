@@ -119,8 +119,9 @@ class GUI(UI):
                     self.life.curr_generation[row][col] ^= 1
 
 
-"""
+
 #проверка
+"""
 life = GameOfLife((50, 50))
 game = GUI(life)
 game.run()

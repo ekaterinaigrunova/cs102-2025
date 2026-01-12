@@ -161,6 +161,7 @@ class GameOfLife:
 
         return new_grid
 
-
+"""
 game = GameOfLife(320, 240, 40)
 game.run()
+"""
