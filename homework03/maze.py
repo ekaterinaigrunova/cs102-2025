@@ -46,23 +46,27 @@ def bin_tree_maze(rows: int = 15, cols: int = 15, random_exit: bool = True) -> L
     :return:
     """
 
-    grid = create_grid(rows, cols)
-    empty_cells = []
-    for x, row in enumerate(grid):
-        for y, _ in enumerate(row):
-            if x % 2 == 1 and y % 2 == 1:
-                grid[x][y] = " "
-                empty_cells.append((x, y))
-    for cell in empty_cells:  # перебор клеток
-        remove_wall(grid, cell)
-    # 1. выбрать любую клетку
-    # 2. выбрать направление: наверх или направо.
-    # Если в выбранном направлении следующая клетка лежит за границами поля,
-    # выбрать второе возможное направление
-    # 3. перейти в следующую клетку, сносим между клетками стену
-    # 4. повторять 2-3 до тех пор, пока не будут пройдены все клетки
+    # Создаём сетку, где все клетки - стены ("*")
+    grid = [["*" for _ in range(cols)] for _ in range(rows)]
 
-    # генерация входа и выхода
+    # Проходим по всем клеткам, которые могут быть проходами (нечётные координаты)
+    for x in range(1, rows, 2):
+        for y in range(1, cols, 2):
+            grid[x][y] = " "  # Делаем клетку проходом
+
+            # Определяем возможные направления для удаления стены
+            directions = []
+            if x > 1:  # Можно пойти вверх
+                directions.append(("up", x - 1, y))
+            if y < cols - 2:  # Можно пойти вправо
+                directions.append(("right", x, y + 1))
+
+            # Если есть возможные направления, выбираем случайное
+            if directions:
+                direction, wall_x, wall_y = choice(directions)
+                grid[wall_x][wall_y] = " "  # Убираем стену
+
+    # Генерация входа и выхода
     if random_exit:
         x_in, x_out = randint(0, rows - 1), randint(0, rows - 1)
         y_in = randint(0, cols - 1) if x_in in (0, rows - 1) else choice((0, cols - 1))
@@ -71,7 +75,10 @@ def bin_tree_maze(rows: int = 15, cols: int = 15, random_exit: bool = True) -> L
         x_in, y_in = 0, cols - 2
         x_out, y_out = rows - 1, 1
 
-    grid[x_in][y_in], grid[x_out][y_out] = "X", "X"
+    # Проверяем, что вход и выход не находятся в стенах
+    # Если попадают в стену, делаем их проходами
+    grid[x_in][y_in] = "X"
+    grid[x_out][y_out] = "X"
 
     return grid
 
