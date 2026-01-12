@@ -46,27 +46,37 @@ def bin_tree_maze(rows: int = 15, cols: int = 15, random_exit: bool = True) -> L
     :return:
     """
 
-    # Создаём сетку, где все клетки - стены ("*")
-    grid = [["*" for _ in range(cols)] for _ in range(rows)]
+    grid = create_grid(rows, cols)
+    empty_cells = []
 
-    # Проходим по всем клеткам, которые могут быть проходами (нечётные координаты)
-    for x in range(1, rows, 2):
-        for y in range(1, cols, 2):
-            grid[x][y] = " "  # Делаем клетку проходом
+    # Заполняем сетку и создаем список пустых клеток (как в вашем коде)
+    for x, row in enumerate(grid):
+        for y, _ in enumerate(row):
+            if x % 2 == 1 and y % 2 == 1:
+                grid[x][y] = " "
+                empty_cells.append((x, y))
 
-            # Определяем возможные направления для удаления стены
-            directions = []
-            if x > 1:  # Можно пойти вверх
-                directions.append(("up", x - 1, y))
-            if y < cols - 2:  # Можно пойти вправо
-                directions.append(("right", x, y + 1))
+    # Алгоритм двоичного дерева
+    for cell in empty_cells:
+        x, y = cell
 
-            # Если есть возможные направления, выбираем случайное
-            if directions:
-                direction, wall_x, wall_y = choice(directions)
-                grid[wall_x][wall_y] = " "  # Убираем стену
+        # Определяем возможные направления
+        directions = []
 
-    # Генерация входа и выхода
+        # Можно пойти вверх (проверяем границы)
+        if x > 1:  # x-2 >= 1 (чтобы не выйти за границу)
+            directions.append(("up", x - 1, y))
+
+        # Можно пойти вправо (проверяем границы)
+        if y < cols - 2:  # y+2 <= cols-1 (чтобы не выйти за границу)
+            directions.append(("right", x, y + 1))
+
+        # Если есть возможные направления, выбираем случайное и убираем стену
+        if directions:
+            direction, wall_x, wall_y = choice(directions)
+            grid[wall_x][wall_y] = " "
+
+    # Генерация входа и выхода (как в вашем коде)
     if random_exit:
         x_in, x_out = randint(0, rows - 1), randint(0, rows - 1)
         y_in = randint(0, cols - 1) if x_in in (0, rows - 1) else choice((0, cols - 1))
@@ -75,10 +85,7 @@ def bin_tree_maze(rows: int = 15, cols: int = 15, random_exit: bool = True) -> L
         x_in, y_in = 0, cols - 2
         x_out, y_out = rows - 1, 1
 
-    # Проверяем, что вход и выход не находятся в стенах
-    # Если попадают в стену, делаем их проходами
-    grid[x_in][y_in] = "X"
-    grid[x_out][y_out] = "X"
+    grid[x_in][y_in], grid[x_out][y_out] = "X", "X"
 
     return grid
 
