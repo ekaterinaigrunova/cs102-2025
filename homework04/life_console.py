@@ -17,6 +17,8 @@ class Console(UI):
 
     def __init__(self, life: GameOfLife) -> None:
         super().__init__(life)
+        self.paused = False
+        self.running = True
 
     def draw_borders(self, screen) -> None:
         """Отобразить рамку."""
@@ -40,32 +42,30 @@ class Console(UI):
         screen.keypad(True)
 
         try:
-            while True:
-                screen.clear()
-                self.draw_borders(screen)
-                self.draw_grid(screen)
-                screen.refresh()
+            while self.running:
+                if not (self.paused):
+                    screen.clear()
+                    self.draw_borders(screen)
+                    self.draw_grid(screen)
+                    screen.refresh()
+                    # шаг игры
+                    self.life.step()
 
                 # обработка клавиш
                 key = screen.getch()
                 if key == ord("q"):  # ← ВЫХОД ПО КЛАВИШЕ
-                    break
-
-                # шаг игры
-                self.life.step()
+                    self.running = False
+                if key == ord("p"):
+                    self.paused = not (self.paused)
 
                 # условия остановки (опционально)
                 if not self.life.is_changing:
-                    break
+                    self.running = False
+
                 if self.life.is_max_generations_exceeded:
-                    break
+                    self.running = False
 
                 time.sleep(0.2)
 
         finally:
             curses.endwin()
-
-
-life = GameOfLife((20, 60), max_generations=50)
-ui = Console(life)
-ui.run()

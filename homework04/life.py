@@ -104,7 +104,7 @@ class GameOfLife:
                 list_neighbors = sum(self.get_neighbours((i, j)))
 
                 # существо умирает
-                if not list_neighbors in (2,3):
+                if not list_neighbors in (2, 3):
                     new_grid[i][j] = 0
                 # существо появляется
                 elif list_neighbors == 3 and cell == 0:
@@ -144,7 +144,7 @@ class GameOfLife:
         """
         Прочитать состояние клеток из указанного файла.
         """
-        with open(f"{filename}", "r", encoding = "utf-8") as f:
+        with open(f"{filename}", "r", encoding="utf-8") as f:
             new_grid = []
             for line in f:
                 row = list(map(int, line.replace("\n", "").strip()))
@@ -165,7 +165,7 @@ class GameOfLife:
         """
         Сохранить текущее состояние клеток в указанный файл.
         """
-        with open(filename, "w", encoding = "utf-8") as file:
+        with open(filename, "w", encoding="utf-8") as file:
             for row in self.curr_generation:
                 line = "".join(str(col) for col in row)
                 file.write(f"{line}\n")

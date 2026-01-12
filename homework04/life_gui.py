@@ -117,12 +117,3 @@ class GUI(UI):
                 # если внутри поля то меняем состояние клетки на противоположное
                 if 0 <= row < self.life.rows and 0 <= col < self.life.cols:
                     self.life.curr_generation[row][col] ^= 1
-
-
-
-#проверка
-"""
-life = GameOfLife((50, 50))
-game = GUI(life)
-game.run()
-"""
